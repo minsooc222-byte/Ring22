@@ -2,810 +2,270 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f7fb">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>한문 퀴즈</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--ink:#182230;--muted:#667085;--line:#d9e0ea;--blue:#2457d6;--bluebg:#eaf0ff;--green:#18794e;--red:#b42318}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
-button,input,select{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
-.app{max-width:1100px;margin:auto;padding:12px 12px calc(20px + env(safe-area-inset-bottom))}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-h1{font-size:27px;margin:0}h2{font-size:17px;margin:0 0 12px}
-.small{font-size:12px;color:var(--muted);line-height:1.5}
-.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-label.field{display:block;font-size:12px;font-weight:750;color:#475467}
-select{display:block;width:100%;margin-top:6px;min-height:43px;padding:8px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink)}
-button{border:0;border-radius:10px;padding:11px 14px;min-height:42px;font-weight:750}
-button:disabled{opacity:.4;cursor:default}
-.primary{background:var(--blue);color:white}.secondary{background:#edf1f7;color:#344054}.outline{background:white;border:1px solid var(--line);color:#344054}
-.buttons{display:flex;gap:8px;flex-wrap:wrap}
-.range-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.range-group{border:1px solid var(--line);border-radius:11px;padding:9px}
-.range-group h3{font-size:13px;margin:0 0 8px}
-.ranges{display:flex;flex-wrap:wrap;gap:6px}
-.ranges label{display:flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px;font-size:12px}
-.ranges input{margin:0;accent-color:var(--blue)}
-.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:700}
-.progress{height:5px;background:#edf0f5;border-radius:9px;margin:10px 0 14px;overflow:hidden}
-.progress div{height:100%;background:var(--blue);width:0}
-.prompt-label{text-align:center;color:var(--muted);font-size:12px}
-.prompt{text-align:center;font-size:clamp(38px,9vw,64px);font-weight:850;margin:8px 0 12px;font-family:"Noto Serif CJK KR","Batang",serif;word-break:keep-all}
-.hint{text-align:center;font-size:12px;color:var(--muted);margin:0 0 12px}
-.glosses{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0}
-.gloss{border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;padding:9px 11px;text-align:center;min-width:65px}
-.gloss b{display:block;font-size:20px}.gloss span{font-size:12px;color:#475467}
-.answer-row{display:flex;gap:7px}
-.answer-row input{min-width:0;flex:1;width:100%;border:2px solid #cbd5e1;border-radius:11px;padding:12px;font-size:17px;min-height:51px;outline:none}
-.answer-row input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2457d61a}
-.answer-row button{min-width:85px}
-.feedback{margin-top:10px;padding:11px;border-radius:11px;font-size:14px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere}
-.correct{background:#e9f7ef;color:#17633d}.wrong{background:#fff0ef;color:#8d2119}.neutral{background:#f0f3f8;color:#344054}
+body{margin:0;background:#f4f6fa;color:#182230;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+main{max-width:850px;margin:auto;padding:14px}
+section{background:white;border:1px solid #dce2eb;border-radius:14px;padding:15px;margin-bottom:12px}
+h1{font-size:26px;margin:0 0 5px}h2{font-size:17px;margin:0 0 12px}
+.small{font-size:12px;color:#667085}
+select,input{font:inherit;border:1px solid #cbd5e1;border-radius:9px;padding:10px;background:white;max-width:100%}
+select{width:100%;margin-top:5px}
+label.field{display:block;font-size:13px;margin-bottom:10px}
+button{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;min-height:42px;cursor:pointer}
+.primary{background:#2457d6;color:white}.secondary{background:#edf0f5;color:#344054}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+#ranges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.group{border:1px solid #dce2eb;border-radius:10px;padding:9px}
+.group b{display:block;font-size:13px;margin-bottom:7px}
+.checks{display:flex;flex-wrap:wrap;gap:7px}
+.checks label{font-size:12px;display:flex;align-items:center;gap:4px;background:#f5f7fa;border-radius:6px;padding:6px}
+.checks input{margin:0;padding:0}
+#question{font-size:48px;text-align:center;margin:18px 0;font-weight:bold}
+#feedback{white-space:pre-line;line-height:1.7;margin-top:10px}
 .hidden{display:none!important}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
-.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
-.result-item{background:white;border:1px solid var(--line);border-radius:10px;padding:11px;margin-top:8px;font-size:13px;line-height:1.6}
-.tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:3px 6px;margin:2px}
-@media(max-width:650px){
- .app{padding:9px 9px calc(14px + env(safe-area-inset-bottom))}
- .grid,.range-groups{grid-template-columns:1fr}
- .panel,.card{padding:11px}
- .prompt{margin:5px 0 9px}
- .glosses{gap:5px;margin:8px 0}
- .gloss{padding:7px;min-width:55px}
- .answer-row{gap:5px}
- .answer-row button{min-width:76px;padding:9px}
- .progress{margin:8px 0 11px}
- .feedback{padding:9px;margin-top:8px}
-}
-@media(orientation:landscape) and (max-height:520px){
- .app{max-width:1100px;padding:6px 12px}
- .panel,.card{padding:9px;margin-bottom:7px}
- .prompt{font-size:38px;margin:3px 0 7px}
- .glosses{margin:5px 0}
- .gloss{padding:5px 8px}
- .progress{margin:6px 0 8px}
-}
+@media(max-width:600px){main{padding:8px}section{padding:11px}#ranges{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="app">
+<main>
 <header>
-  <div>
-    <h1>한문 퀴즈</h1>
-    <div class="small">훈음 · 풀이 순서 · 전체 뜻 연습</div>
-  </div>
-  <strong id="counts" class="small"></strong>
+<h1>한문 퀴즈</h1>
+<p class="small">범위 선택 · 음 쓰기 · 전체 뜻 쓰기</p>
 </header>
 
-<section class="panel" id="setup">
-  <h2>퀴즈 설정</h2>
-  <div class="grid">
-    <label class="field">문제 종류
-      <select id="kind">
-        <option value="char">글자</option>
-        <option value="word">단어</option>
-        <option value="idiom">사자성어</option>
-      </select>
-    </label>
-    <label class="field">문제 유형
-      <select id="mode">
-        <option value="reading">음 쓰기</option>
-        <option value="full">글자별 뜻과 음 쓰기</option>
-        <option value="order">풀이 순서 맞히기</option>
-        <option value="meaning">전체 뜻 쓰기</option>
-      </select>
-    </label>
-    <label class="field">출제 순서
-      <select id="order">
-        <option value="random">무작위</option>
-        <option value="list">목록 순</option>
-      </select>
-    </label>
-  </div>
-  <p class="small" id="modeHelp">글자 문제는 뜻과 음을 모두 입력해야 합니다.</p>
+<section>
+<h2>퀴즈 설정</h2>
+<label class="field">문제 종류
+<select id="kind">
+<option value="char">글자</option>
+<option value="word">단어</option>
+<option value="idiom">사자성어</option>
+</select>
+</label>
+<label class="field">문제 유형
+<select id="mode">
+<option value="reading">음 쓰기</option>
+<option value="meaning">전체 뜻 쓰기</option>
+<option value="order">풀이 순서 맞히기</option>
+</select>
+</label>
+<label class="field">출제 순서
+<select id="order">
+<option value="random">무작위</option>
+<option value="list">목록 순</option>
+</select>
+</label>
 </section>
 
-<section class="panel" id="rangesPanel">
-  <h2>범위 선택 <span class="small">(여러 범위 선택 가능)</span></h2>
-  <div class="range-groups" id="ranges"></div>
-  <p class="small" id="rangeSummary"></p>
-  <div class="buttons">
-    <button class="outline" id="allRanges">전체 선택</button>
-    <button class="outline" id="noRanges">선택 해제</button>
-    <button class="primary" id="start">퀴즈 시작</button>
-  </div>
-</section>
+<section>
+<h2>범위 선택</h2>
+<p class="small">아래 범위는 스크립트가 실행되기 전에도 표시됩니다.</p>
 
-<section class="card hidden" id="quiz">
-  <div class="meta"><span id="quizType"></span><span id="position"></span></div>
-  <div class="progress"><div id="bar"></div></div>
-  <div class="prompt-label" id="questionLabel"></div>
-  <div class="prompt" id="question"></div>
-  <div class="hint" id="hint"></div>
-  <div id="glosses" class="glosses"></div>
-  <div class="answer-row">
-    <input id="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
-    <button class="primary" id="check">확인</button>
-  </div>
-  <div id="feedback" class="feedback hidden" aria-live="polite"></div>
-  <div class="buttons" style="justify-content:space-between;margin-top:10px">
-    <button class="outline" id="prev">← 이전</button>
-    <div class="buttons">
-      <button class="secondary" id="skip">건너뛰기</button>
-      <button class="primary hidden" id="next">다음 →</button>
+<div id="ranges">
+  <div class="group">
+    <b>글자</b>
+    <div class="checks">
+      <label><input type="checkbox" class="range" data-kind="char" checked>전체 글자</label>
     </div>
   </div>
-  <p class="small">Enter: 정답 확인 → 다음 문제. 입력창의 초점을 유지하도록 설정했습니다.</p>
+  <div class="group">
+    <b>단어</b>
+    <div class="checks">
+      <label><input type="checkbox" class="range" data-kind="word" checked>전체 단어</label>
+    </div>
+  </div>
+  <div class="group">
+    <b>사자성어</b>
+    <div class="checks">
+      <label><input type="checkbox" class="range" data-kind="idiom" checked>전체 사자성어</label>
+    </div>
+  </div>
+</div>
+
+<p id="summary" class="small">범위 목록을 불러오는 중입니다.</p>
+<div class="row">
+<button class="secondary" id="selectAll">전체 선택</button>
+<button class="secondary" id="clearAll">선택 해제</button>
+<button class="primary" id="start">퀴즈 시작</button>
+</div>
 </section>
 
-<section class="card hidden" id="results">
-  <h2>결과</h2>
-  <div class="stats">
-    <div class="stat"><b id="total">0</b><span>전체</span></div>
-    <div class="stat"><b id="right">0</b><span>정답</span></div>
-    <div class="stat"><b id="wrong">0</b><span>오답·미응답</span></div>
-  </div>
-  <div class="buttons" style="margin-top:12px">
-    <button class="primary" id="retry">오답만 다시 풀기</button>
-    <button class="secondary" id="restart">같은 문제 다시 풀기</button>
-    <button class="outline" id="back">설정으로</button>
-  </div>
-  <div id="resultList"></div>
-</section>
+<section id="quiz" class="hidden">
+<div class="small" id="progress"></div>
+<div id="question"></div>
+<div id="hint" class="small"></div>
+<div class="row">
+<input id="answer" type="text" placeholder="정답 입력" autocomplete="off">
+<button id="check" class="primary">확인</button>
+<button id="next" class="secondary hidden">다음</button>
 </div>
+<div id="feedback"></div>
+<div class="row" style="margin-top:10px">
+<button id="previous" class="secondary">이전</button>
+<button id="exit" class="secondary">설정으로</button>
+</div>
+</section>
+</main>
 
 <script>
 "use strict";
 
-/* 원본 글자 목록 */
-const rawChars=[
-["禾","벼","화"],["象","코끼리","상"],["木","나무","목"],["斤","도끼","근"],["析","쪼갤","석"],
-["水","물","수"],["田","밭","전"],["畓","논","답"],["人","사람","인"],["圍","에워쌀","위"],
-["囚","가둘","수"],["大","큰","대"],["小","작을","소"],["尖","뾰족할","첨"],["州","고을","주"],
-["洲","물가","주"],["土","흙","토"],["吐","토할","토"],["草","풀","초"],["方","모","방"],
-["芳","꽃다울","방"],["心","마음","심"],["惑","미혹할","혹"],["或","혹시","혹"],["朋","벗","붕"],
-["群","무리","군"],["鷄","닭","계"],["登","오를","등"],["山","뫼","산"],["日","날","일"],
-["月","달","월"],["肝","간","간"],["膽","쓸개","담"],["自","스스로","자"],["足","발","족"],
-["莫","없을","막"],["然","그럴","연"],["說","말씀","설"],["教","가르칠","교"],["燃","탈","연"],
-["燒","사를","소"],["生","날","생"],["死","죽을","사"],["面","낯","면"],["友","벗","우"],
-["龜","거북","귀"],["主","주인","주"],["導","이끌","도"],["抵","막을","저"],["抗","겨룰","항"]
-];
+const $ = id => document.getElementById(id);
 
-/* 한자 사전: 한자별 뜻과 음 */
-const D={
-"象":["코끼리","상"],"形":["모양","형"],"指":["가리킬","지"],"事":["일","사"],"會":["모일","회"],"意":["뜻","의"],"聲":["소리","성"],
-"小":["작을","소"],"三":["셋","삼"],"階":["섬돌","계"],"段":["층계","단"],"橫":["가로","횡"],"斷":["끊을","단"],"禁":["금할","금"],"止":["그칠","지"],
-"群":["무리","군"],"鷄":["닭","계"],"登":["오를","등"],"山":["뫼","산"],"日":["날","일"],"月":["달","월"],"肝":["간","간"],"膽":["쓸개","담"],
-"草":["풀","초"],"木":["나무","목"],"自":["스스로","자"],"足":["발","족"],"莫":["없을","막"],"然":["그럴","연"],"說":["말씀","설"],"教":["가르칠","교"],"敎":["가르칠","교"],
-"燃":["탈","연"],"燒":["사를","소"],"生":["날","생"],"死":["죽을","사"],"四":["넉","사"],"面":["낯","면"],"朋":["벗","붕"],"友":["벗","우"],
-"龜":["거북","귀"],"鑑":["거울","감"],"主":["주인","주"],"導":["이끌","도"],"抵":["막을","저"],"抗":["겨룰","항"],
-"料":["헤아릴","료"],"理":["다스릴","리"],"研":["갈","연"],"究":["연구할","구"],"家":["집","가"],"專":["오로지","전"],"門":["문","문"],
-"開":["열","개"],"發":["필","발"],"者":["사람","자"],"科":["과목","과"],"學":["배울","학"],"無":["없을","무"],"難":["어려울","난"],
-"地":["땅","지"],"域":["지경","역"],"蜂":["벌","봉"],"起":["일어날","기"],"問":["물을","문"],"安":["편안","안"],"通":["통할","통"],"稱":["일컬을","칭"],
-"己":["몸","기"],"未":["아닐","미"],"年":["해","년"],"警":["깨우칠","경"],"察":["살필","찰"],"逮":["미칠","체"],"捕":["잡을","포"],
-"蜜":["꿀","밀"],"語":["말씀","어"],"辯":["말 잘할","변"],"護":["도울","호"],"士":["선비","사"],"潛":["잠길","잠"],"龍":["용","룡"],
-"訴":["호소할","소"],"訟":["송사할","송"],"醫":["의원","의"],"師":["스승","사"],"治":["다스릴","치"],"療":["병 고칠","료"],"念":["생각","념"],"頭":["머리","두"],
-"寧":["편안","녕"],"祝":["빌","축"],"賀":["하례할","하"],"愛":["사랑","애"],"情":["뜻","정"],"感":["느낄","감"],"謝":["사례할","사"],
-"交":["사귈","교"],"級":["등급","급"],"畏":["두려워할","외"],"周":["두루","주"],"邊":["가","변"],"智":["슬기","지"],"慧":["슬기로울","혜"],
-"討":["칠","토"],"論":["논할","론"],"過":["지날","과"],"程":["한도","정"],"調":["고를","조"],"査":["조사할","사"],"泳":["헤엄칠","영"],
-"敦":["도타울","돈"],"篤":["도타울","독"],"逆":["거스를","역"],"準":["준할","준"],"浸":["잠길","침"],"洪":["큰물","홍"],"打":["칠","타"],
-"甚":["심할","심"],"深":["깊을","심"],"塗":["칠할","도"],"炭":["숯","탄"],"知":["알","지"],"音":["소리","음"],"避":["피할","피"],"封":["봉할","봉"],
-"建":["세울","건"],"戰":["싸움","전"],"略":["간략할","략"],"斥":["물리칠","척"],"和":["화할","화"],"血":["피","혈"],"樓":["다락","루"],
-"漢":["한수","한"],"文":["글월","문"],"化":["될","화"],"財":["재물","재"],"夜":["밤","야"],"行":["다닐","행"],"含":["머금을","함"],"蓄":["쌓을","축"],
-"性":["성품","성"],"簡":["간략할","간"],"潔":["깨끗할","결"],"看":["볼","간"],"板":["널빤지","판"],"記":["기록할","기"],"錄":["기록할","록"],
-"手":["손","수"],"飜":["뒤칠","번"],"譯":["번역할","역"],"靈":["신령","령"],"揮":["휘두를","휘"],"作":["지을","작"],"映":["비칠","영"],
-"畫":["그림","화"],"監":["볼","감"],"督":["감독할","독"],"築":["쌓을","축"],"溫":["따뜻할","온"],"故":["옛","고"],"新":["새","신"],
-"伯":["맏","백"],"牙":["어금니","아"],"絶":["끊을","절"],"絃":["줄","현"],"咸":["다","함"],"興":["일어날","흥"],"差":["어긋날","차"],
-"使":["하여금","사"],"兔":["토끼","토"],"狗":["개","구"],"烹":["삶을","팽"],"男":["사내","남"],"負":["질","부"],"女":["계집","여"],"戴":["일","대"],
-"天":["하늘","천"],"高":["높을","고"],"馬":["말","마"],"肥":["살찔","비"],"滅":["멸할","멸"],"之":["갈","지"],"禍":["재앙","화"],"薄":["엷을","박"],
-"待":["기다릴","대"],"不":["아닐","불"],"恥":["부끄러울","치"],"下":["아래","하"],"矯":["바로잡을","교"],"角":["뿔","각"],"殺":["죽일","살"],"牛":["소","우"],
-"機":["베틀","기"],"戒":["경계할","계"],"一":["한","일"],"舉":["들","거"],"兩":["두","량"],"得":["얻을","득"],"相":["서로","상"],"着":["붙을","착"],"衣":["옷","의"],
-"管":["대롱","관"],"鮑":["절인 물고기","포"],"金":["쇠","금"],"蘭":["난초","란"],"契":["맺을","계"],"桃":["복숭아","도"],"園":["동산","원"],
-"結":["맺을","결"],"義":["옳을","의"],"背":["등","배"],"陣":["진칠","진"],"楚":["초나라","초"],"歌":["노래","가"],"鹿":["사슴","록"],"為":["할","위"],
-"所":["바","소"],"欲":["하고자 할","욕"],"勿":["말","물"],"施":["베풀","시"],"於":["어조사","어"],"戶":["집","호"],"照":["비출","조"],"螢":["반딧불","형"],
-"雪":["눈","설"],"功":["공","공"],"株":["그루","주"],"守":["지킬","수"],"塞":["변방","새"],"翁":["늙은이","옹"],"愚":["어리석을","우"],"移":["옮길","이"],
-"蛇":["뱀","사"],"添":["더할","첨"],"鳴":["울","명"],"脣":["입술","순"],"亡":["망할","망"],"齒":["이","치"],"寒":["찰","한"],"泣":["울","읍"],
-"斬":["벨","참"],"謖":["일어날","속"],"公":["공평할","공"],"前":["앞","전"],"字":["글자","자"],"實":["열매","실"],"王":["임금","왕"],"盜":["훔칠","도"],
-"鮮":["고울","선"],"鶴":["학","학"],"禾":["벼","화"],"斤":["도끼","근"],"析":["쪼갤","석"],"田":["밭","전"],"畓":["논","답"],"圍":["에워쌀","위"],
-"囚":["가둘","수"],"大":["큰","대"],"尖":["뾰족할","첨"],"州":["고을","주"],"洲":["물가","주"],"土":["흙","토"],"吐":["토할","토"],"方":["모","방"],"芳":["꽃다울","방"],
-"惑":["미혹할","혹"],"或":["혹시","혹"],"心":["마음","심"],"人":["사람","인"]
+const chars = [
+["禾","벼","화"],["象","코끼리","상"],["木","나무","목"],
+["斤","도끼","근"],["析","쪼갤","석"],["水","물","수"],
+["田","밭","전"],["畓","논","답"],["人","사람","인"],
+["大","큰","대"],["小","작을","소"],["心","마음","심"],
+["日","날","일"],["月","달","월"],["山","뫼","산"],
+["草","풀","초"],["朋","벗","붕"],["友","벗","우"]
+].map(x=>({hanja:x[0],reading:x[2],meaning:x[1],kind:"char"}));
+
+const words = [
+["象形","상형","사물의 모양을 본떠 만든 한자"],
+["指事","지사","추상적인 개념이나 일을 부호로 나타낸 한자"],
+["會意","회의","둘 이상의 한자를 결합해 뜻을 나타낸 한자"],
+["形聲","형성","뜻을 나타내는 부분과 소리를 나타내는 부분을 결합한 한자"],
+["登山","등산","산에 오름"],
+["日月","일월","해와 달"],
+["肝膽","간담","간과 쓸개"],
+["草木","초목","풀과 나무"],
+["自足","자족","스스로 만족함"],
+["生死","생사","삶과 죽음"],
+["朋友","붕우","벗과 친구"],
+["主導","주도","주장이 되어 이끌어 감"],
+["抵抗","저항","어떤 힘이나 작용에 맞섬"],
+["問安","문안","안부를 물음"],
+["通稱","통칭","일반적으로 널리 부름"],
+["警察","경찰","사회의 안전과 질서를 지키는 기관 또는 사람"],
+["逮捕","체포","죄를 지은 혐의가 있는 사람을 붙잡음"],
+["醫師","의사","환자를 진료하고 치료하는 사람"],
+["治療","치료","병이나 상처를 낫게 함"],
+["祝賀","축하","기쁜 일을 함께 기뻐함"],
+["感謝","감사","고마움을 느낌"],
+["討論","토론","여러 사람이 의견을 말하며 논의함"],
+["水泳","수영","물속에서 헤엄침"],
+["洪水","홍수","큰물이 나서 넘침"],
+["漢字","한자","한자로 이루어진 문자"]
+].map(x=>({hanja:x[0],reading:x[1],meaning:x[2],kind:"word"}));
+
+const idioms = [
+["溫故知新","온고지신","옛것을 익히고 그것을 바탕으로 새것을 앎"],
+["伯牙絶絃","백아절현","자기를 알아주는 벗의 죽음을 슬퍼함"],
+["兔死狗烹","토사구팽","필요할 때 쓰고 일이 끝나면 버림"],
+["天高馬肥","천고마비","하늘이 높고 말이 살찐다는 가을의 풍요로운 모습"],
+["不恥下問","불치하문","자기보다 못하다고 여기는 사람에게 묻는 것을 부끄러워하지 않음"],
+["一舉兩得","일거양득","한 가지 일로 두 가지 이익을 얻음"],
+["管鮑之交","관포지교","서로를 깊이 이해하고 믿는 우정"],
+["背水之陣","배수진","물러설 곳 없이 결전을 각오한 진형"],
+["四面楚歌","사면초가","사방이 적에게 둘러싸여 도움을 받기 어려운 상황"],
+["指鹿為馬","지록위마","윗사람을 속이고 사실을 왜곡함"],
+["螢雪之功","형설지공","어려운 환경에서도 열심히 공부해 이룬 성과"],
+["守株待兔","수주대토","한 가지 방법만 고집하며 요행을 기다림"],
+["愚公移山","우공이산","꾸준히 노력하면 큰일도 이룰 수 있음"],
+["畫蛇添足","화사첨족","불필요한 일을 더해 오히려 일을 그르침"],
+["群鷄一鶴","군계일학","많은 평범한 사람 가운데 뛰어난 한 사람"],
+["脣亡齒寒","순망치한","서로 의지하는 관계에서 한쪽이 망하면 다른 쪽도 위험함"]
+].map(x=>({hanja:x[0],reading:x[1],meaning:x[2],kind:"idiom"}));
+
+const all={char:chars,word:words,idiom:idioms};
+const kindNames={char:"글자",word:"단어",idiom:"사자성어"};
+let questions=[],index=0,answered=false,history=[],lastQuestions=[];
+
+function updateSummary(){
+  const selected=[...document.querySelectorAll(".range:checked")].map(x=>x.dataset.kind);
+  $("summary").textContent="선택된 종류: "+(selected.length?selected.map(x=>kindNames[x]).join(", "):"없음");
+}
+document.querySelectorAll(".range").forEach(x=>x.addEventListener("change",updateSummary));
+
+$("selectAll").onclick=()=>{
+  document.querySelectorAll(".range").forEach(x=>x.checked=true);
+  updateSummary();
+};
+$("clearAll").onclick=()=>{
+  document.querySelectorAll(".range").forEach(x=>x.checked=false);
+  updateSummary();
 };
 
-/* 단어 자료: 한자 | 음 | 실제 의미 | 풀이 조각 */
-const W=[
-["象形","상형","사물의 모양을 본떠 만든 한자","모양을 본뜨다"],
-["指事","지사","추상적인 개념이나 일을 부호로 나타낸 한자","일을 가리키다"],
-["會意","회의","둘 이상의 한자를 결합해 뜻을 나타낸 한자","뜻을 모으다"],
-["形聲","형성","뜻을 나타내는 부분과 소리를 나타내는 부분을 결합한 한자","모양과 소리를 결합하다"],
-["小三階段","소삼계단","작은 세 단계","작은 세 단계"],
-["橫斷禁止","횡단금지","길을 가로질러 건너는 것을 금함","가로질러 건넘을 금하다"],
-["群鷄","군계","무리 지은 닭","닭의 무리"],
-["登山","등산","산에 오름","산에 오르다"],
-["日月","일월","해와 달","해와 달"],
-["肝膽","간담","간과 쓸개","간과 쓸개"],
-["草木","초목","풀과 나무","풀과 나무"],
-["自足","자족","스스로 만족함","스스로 만족하다"],
-["莫然","막연","뚜렷하지 않고 어렴풋함","뚜렷하지 않다"],
-["說敎","설교","종교의 교리를 설명함","교리를 설명하다"],
-["燃燒","연소","물질이 산소와 반응하며 열과 빛을 내는 현상","타다"],
-["生死","생사","삶과 죽음","삶과 죽음"],
-["四面","사면","네 방향 또는 네 면","네 방향"],
-["朋友","붕우","벗과 친구","벗과 친구"],
-["龜鑑","귀감","본보기가 될 만한 모범","본보기"],
-["主導","주도","주장이 되어 이끌어 감","주장이 되어 이끌다"],
-["抵抗","저항","어떤 힘이나 작용에 맞섬","맞서다"],
-["料理研究家","요리연구가","요리를 연구하는 사람","요리를 연구하는 사람"],
-["專門","전문","어떤 분야에 깊은 지식이나 기술이 있음","한 분야에 깊다"],
-["開發者","개발자","무엇을 개발하는 사람","개발하는 사람"],
-["科學者","과학자","과학을 연구하는 사람","과학을 연구하는 사람"],
-["無難","무난","별다른 문제나 어려움이 없음","어려움이 없다"],
-["地域","지역","일정한 지리적 범위","일정한 땅"],
-["蜂起","봉기","여럿이 떼를 지어 일어남","무리가 일어나다"],
-["問安","문안","안부를 물음","안부를 묻다"],
-["通稱","통칭","일반적으로 널리 부름","널리 일컫다"],
-["己未年","기미년","육십갑자의 마흔여섯 번째 해","기미라는 해"],
-["警察","경찰","사회의 안전과 질서를 지키는 기관 또는 사람","경계하고 살피다"],
-["逮捕","체포","죄를 지은 혐의가 있는 사람을 붙잡음","붙잡다"],
-["蜜語","밀어","달콤한 말","달콤한 말"],
-["辯護士","변호사","법률에 관한 일을 맡아 돕는 사람","법률 일을 돕는 사람"],
-["潛龍","잠룡","아직 세상에 드러나지 않은 뛰어난 인물","숨어 있는 용"],
-["訴訟","소송","법원에 재판을 청구하는 절차","재판을 청구하다"],
-["醫師","의사","환자를 진료하고 치료하는 사람","병을 치료하는 사람"],
-["治療","치료","병이나 상처를 낫게 함","병을 다스리다"],
-["念頭","염두","마음속에 생각하는 바","마음속 생각"],
-["安寧","안녕","아무 탈 없이 편안함","편안하다"],
-["祝賀","축하","기쁜 일을 함께 기뻐함","기쁨을 축하하다"],
-["友愛","우애","형제나 친구 사이의 사랑","벗을 사랑하다"],
-["未安","미안","남에게 마음이 편하지 않음","마음이 편하지 않다"],
-["友情","우정","친구 사이의 정","벗 사이의 정"],
-["感謝","감사","고마움을 느낌","고마움을 느끼다"],
-["交友","교우","친구를 사귐","벗을 사귀다"],
-["級友","급우","같은 반이나 학급의 친구","같은 반의 벗"],
-["畏友","외우","존경하며 두려워할 만큼 훌륭한 친구","존경하는 벗"],
-["周邊","주변","가장자리와 그 근처","주위의 가장자리"],
-["智慧","지혜","사물의 이치를 빨리 깨닫고 처리하는 능력","슬기"],
-["討論","토론","여러 사람이 의견을 말하며 논의함","의견을 논하다"],
-["過程","과정","일이 진행되는 경로나 단계","지나가는 단계"],
-["調査","조사","사실이나 내용을 자세히 살펴봄","자세히 살피다"],
-["水泳","수영","물속에서 헤엄침","물에서 헤엄치다"],
-["敦篤","돈독","정이 두텁고 성실함","정이 두텁다"],
-["莫逆","막역","허물없이 매우 친함","거스름이 없다"],
-["水準","수준","사물의 가치나 정도를 나타내는 기준","정도의 기준"],
-["潛水","잠수","물속으로 잠겨 들어감","물속에 잠기다"],
-["浸水","침수","물이 들어차 잠김","물에 잠기다"],
-["洪水","홍수","큰물이 나서 넘침","큰물이 넘치다"],
-["安打","안타","야구에서 타자가 안전하게 출루하는 타격","안전하게 치다"],
-["甚深","심심","매우 깊음","매우 깊다"],
-["塗炭","도탄","진흙과 숯불이라는 뜻으로 몹시 어려운 처지","진흙과 숯불"],
-["知音","지음","마음을 알아주는 친구","소리를 알아주는 벗"],
-["避難","피난","재난을 피해 옮김","재난을 피하다"],
-["封建","봉건","토지와 신분을 바탕으로 한 정치·사회 제도","땅을 봉하여 다스리다"],
-["戰略","전략","전쟁이나 경쟁에서 이기기 위한 계획","싸움의 계획"],
-["斥和","척화","화친하자는 주장을 배척함","화친을 배척하다"],
-["心血","심혈","마음과 힘을 다함","마음과 피"],
-["門樓","문루","문 위에 세운 누각","문 위의 누각"],
-["漢字","한자","중국에서 비롯된 한자 체계의 문자","한나라의 글자"],
-["漢文","한문","한자로 쓰인 문장 또는 문어","한자로 쓴 글"],
-["文化財夜行","문화재야행","밤에 문화재와 주변 문화를 즐기는 행사","문화재의 밤 나들이"],
-["含蓄性","함축성","말이나 글에 많은 뜻이 담기는 성질","뜻을 담는 성질"],
-["簡潔性","간결성","간단하고 깔끔한 성질","간단하고 깔끔하다"],
-["看板","간판","상점 등의 이름이나 내용을 나타내는 표지","보고 알리는 판"],
-["記錄","기록","어떤 사실을 글이나 자료로 남김","적어 남기다"],
-["手段","수단","목적을 이루기 위한 방법","손에 쥔 방법"],
-["朝鮮王朝實錄","조선왕조실록","조선 왕조의 역사를 기록한 책","조선 왕조의 기록"],
-["飜譯","번역","한 언어의 내용을 다른 언어로 옮김","다른 말로 옮기다"],
-["靈感","영감","창작 등에 도움이 되는 번뜩이는 생각","신령한 느낌"],
-["發揮","발휘","능력이나 재능을 드러내어 나타냄","능력을 드러내다"],
-["作家","작가","글이나 작품을 만드는 사람","작품을 짓는 사람"],
-["映畫監督","영화감독","영화의 제작 과정을 총괄하는 사람","영화를 감독하는 사람"],
-["建築家","건축가","건축을 설계하고 계획하는 전문가","건축을 하는 사람"]
-];
-
-/* 사자성어: 관용적 의미와 풀이 조각 */
-const I=[
-["溫故知新","온고지신","옛것을 익히고 그것을 바탕으로 새것을 앎",["옛것을 익히고","새것을 알다"]],
-["伯牙絶絃","백아절현","자기를 알아주는 벗의 죽음을 슬퍼함",["백아가","거문고 줄을 끊다"]],
-["咸興差使","함흥차사","심부름 간 사람이 돌아오지 않거나 소식이 없음",["함흥으로 간","심부름꾼"]],
-["兔死狗烹","토사구팽","필요할 때 쓰고 일이 끝나면 버림",["토끼가 죽으면","사냥개를 삶다"]],
-["男負女戴","남부여대","가난한 사람들이 살 곳을 찾아 떠돌아다님",["남자는 짐을 지고","여자는 짐을 머리에 이다"]],
-["天高馬肥","천고마비","하늘이 높고 말이 살찐다는 가을의 풍요로운 모습",["하늘은 높고","말은 살찌다"]],
-["滅門之禍","멸문지화","한 집안이 모두 재앙을 당함",["집안을 멸하는","재앙"]],
-["門前薄待","문전박대","문 앞에서 푸대접함",["문 앞에서","박대하다"]],
-["不恥下問","불치하문","자기보다 못하다고 여기는 사람에게 묻는 것을 부끄러워하지 않음",["아랫사람에게 묻는 것을","부끄러워하지 않다"]],
-["矯角殺牛","교각살우","작은 흠을 고치려다 큰 손해를 봄",["뿔을 바로잡으려다","소를 죽이다"]],
-["斷機之戒","단기지계","학문을 중도에 그만두지 말라는 경계",["베틀의 베를 끊는","경계"]],
-["一舉兩得","일거양득","한 가지 일로 두 가지 이익을 얻음",["한 번 들어","두 가지를 얻다"]],
-["人相着衣","인상착의","사람의 생김새와 옷차림",["사람의 생김새와","옷차림"]],
-["管鮑之交","관포지교","서로를 깊이 이해하고 믿는 우정",["관중과 포숙의","사귐"]],
-["金蘭之契","금란지계","매우 친밀하고 굳은 우정",["쇠처럼 굳고 난초처럼 향기로운","우정의 약속"]],
-["桃園結義","도원결의","뜻을 같이하는 사람들이 의형제를 맺음",["복숭아밭에서","의리를 맺다"]],
-["背水之陣","배수진","물러설 곳 없이 결전을 각오한 진형",["물을 등지고","진을 치다"]],
-["四面楚歌","사면초가","사방이 적에게 둘러싸여 도움을 받기 어려운 상황",["사방에서","초나라 노래가 들리다"]],
-["指鹿為馬","지록위마","윗사람을 속이고 사실을 왜곡함",["사슴을 가리켜","말이라고 하다"]],
-["己所不欲勿施於人","기소불욕물시어인","자기가 원하지 않는 일을 남에게도 하지 말라",["자기가 원하지 않는 것을","남에게 베풀지 말라"]],
-["家家戶戶","가가호호","집집마다",["집집마다","집집마다"]],
-["肝膽相照","간담상조","서로 속마음을 터놓고 친하게 지냄",["간과 쓸개가","서로 비추다"]],
-["螢雪之功","형설지공","어려운 환경에서도 열심히 공부해 이룬 성과",["반딧불과 눈빛으로","이룬 공"]],
-["登龍門","등용문","입신출세의 관문",["용문에","오르다"]],
-["守株待兔","수주대토","한 가지 방법만 고집하며 요행을 기다림",["그루터기를 지키며","토끼를 기다리다"]],
-["塞翁之馬","새옹지마","인생의 길흉화복은 예측하기 어려움",["변방 노인의","말"]],
-["愚公移山","우공이산","꾸준히 노력하면 큰일도 이룰 수 있음",["우공이","산을 옮기다"]],
-["畫蛇添足","화사첨족","불필요한 일을 더해 오히려 일을 그르침",["뱀을 그리고","발을 더하다"]],
-["鷄鳴狗盜","계명구도","천한 재주라도 때로는 쓸모가 있음",["닭 울음과","개 도둑질"]],
-["群鷄一鶴","군계일학","많은 평범한 사람 가운데 뛰어난 한 사람",["닭의 무리 가운데","한 마리 학"]],
-["脣亡齒寒","순망치한","서로 의지하는 관계에서 한쪽이 망하면 다른 쪽도 위험함",["입술이 없어지면","이가 시리다"]],
-["泣斬馬謖","읍참마속","큰 목적을 위해 아끼는 사람도 원칙에 따라 처벌함",["울면서","마속을 베다"]]
-];
-
-const chars=[];
-const seen=new Set();
-rawChars.forEach(([h,m,r])=>{
-  if(!seen.has(h)){
-    seen.add(h);
-    chars.push({hanja:h,reading:r,meaning:m,type:"char"});
-  }
-});
-const words=W.map(x=>({hanja:x[0],reading:x[1],meaning:x[2],parts:[x[3]],type:"word"}));
-const idioms=I.map(x=>({hanja:x[0],reading:x[1],meaning:x[2],parts:x[3],type:"idiom"}));
-const data={char:chars,word:words,idiom:idioms};
-const labels={char:"글자",word:"단어",idiom:"사자성어"};
-const $=id=>document.getElementById(id);
-
-let current=[],index=0,records=[],checked=false,lastConfig=null,reviewOnly=false;
-
-function norm(s){
-  return String(s||"").replace(/\s+/g,"").replace(/[·ㆍ,，。.!！?？]/g,"").toLowerCase();
-}
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-function unique(a){
-  const m=new Map();
-  a.forEach(x=>m.set(x.hanja,x));
-  return [...m.values()];
-}
-
-function renderRanges(){
-  const wrap=$("ranges");
-  wrap.innerHTML="";
-  Object.keys(data).forEach(kind=>{
-    const group=document.createElement("div");
-    group.className="range-group";
-    const title=document.createElement("h3");
-    title.textContent=`${labels[kind]} · ${data[kind].length}개`;
-    group.appendChild(title);
-
-    const list=document.createElement("div");
-    list.className="ranges";
-
-    for(let start=0;start<data[kind].length;start+=10){
-      const end=Math.min(start+10,data[kind].length);
-      const label=document.createElement("label");
-      const input=document.createElement("input");
-      input.type="checkbox";
-      input.checked=true;
-      input.className="range-check";
-      input.dataset.kind=kind;
-      input.dataset.start=start;
-      input.dataset.end=end;
-
-      const text=document.createElement("span");
-      text.textContent=`${start+1}–${end}`;
-      label.append(input,text);
-      list.appendChild(label);
-    }
-
-    group.appendChild(list);
-    wrap.appendChild(group);
-  });
-  updateRangeSummary();
-}
-
-function updateRangeSummary(){
-  const totals={char:0,word:0,idiom:0};
-  document.querySelectorAll(".range-check:checked").forEach(b=>{
-    totals[b.dataset.kind]+=Number(b.dataset.end)-Number(b.dataset.start);
-  });
-  $("rangeSummary").textContent=`선택 범위: 글자 ${totals.char}개 · 단어 ${totals.word}개 · 사자성어 ${totals.idiom}개`;
-}
-
-$("ranges").addEventListener("change",updateRangeSummary);
-$("allRanges").onclick=()=>{
-  document.querySelectorAll(".range-check").forEach(x=>x.checked=true);
-  updateRangeSummary();
-};
-$("noRanges").onclick=()=>{
-  document.querySelectorAll(".range-check").forEach(x=>x.checked=false);
-  updateRangeSummary();
-};
-
-function updateModeOptions(){
+function startQuiz(){
   const kind=$("kind").value;
-  const mode=$("mode");
-  [...mode.options].forEach(o=>{
-    o.disabled=(kind==="char"&&(o.value==="order"||o.value==="meaning"))||
-      (kind!=="char"&&o.value==="full");
-  });
-  if(kind==="char"&&["order","meaning"].includes(mode.value))mode.value="full";
-  if(kind!=="char"&&mode.value==="full")mode.value="reading";
-  $("modeHelp").textContent=kind==="char"
-    ?"글자 문제는 뜻과 음을 모두 입력합니다."
-    :"풀이 순서 문제에서는 한자별 뜻을 보여 줍니다. 전체 뜻 쓰기는 실제 의미를 입력합니다.";
-}
-$("kind").onchange=updateModeOptions;
-
-function getSelected(){
-  const kind=$("kind").value;
-  let out=[];
-  document.querySelectorAll(".range-check:checked").forEach(b=>{
-    if(b.dataset.kind===kind){
-      out.push(...data[kind].slice(+b.dataset.start,+b.dataset.end));
-    }
-  });
-  return unique(out);
-}
-
-function startQuiz(items=null,isReview=false){
-  const kind=$("kind").value,mode=$("mode").value;
-  let selected=items||getSelected();
-  if(!selected.length){
-    alert("현재 종류의 범위를 하나 이상 선택해 주세요.");
+  const checked=[...document.querySelectorAll(".range:checked")].map(x=>x.dataset.kind);
+  if(!checked.includes(kind)){
+    alert("선택한 문제 종류의 범위를 체크해 주세요.");
     return;
   }
-  if(!items&&$("order").value==="random")selected=shuffle([...selected]);
-
-  current=selected;
+  questions=[...all[kind]];
+  if($("order").value==="random"){
+    questions.sort(()=>Math.random()-.5);
+  }
+  lastQuestions=[...questions];
   index=0;
-  checked=false;
-  reviewOnly=isReview;
-  records=current.map(()=>({status:"unanswered",input:""}));
-  lastConfig={kind,mode,order:$("order").value,items:[...selected]};
-
-  $("setup").classList.add("hidden");
-  $("rangesPanel").classList.add("hidden");
+  history=questions.map(()=>({status:"",input:""}));
   $("quiz").classList.remove("hidden");
-  $("results").classList.add("hidden");
   renderQuestion();
-  focusAnswer();
 }
-
-function getMode(item){
-  return item.type==="char"?"full":$("mode").value;
-}
-function charMeaning(h){
-  return D[h]||["뜻 확인 필요","음 확인 필요"];
-}
-function getGlossItems(item){
-  return Array.from(item.hanja).map(h=>{
-    const info=charMeaning(h);
-    return {hanja:h,meaning:info[0],reading:info[1]};
-  });
-}
-function getParts(item){
-  if(item.type==="idiom")return [...(item.parts||[item.meaning])];
-  if(item.type==="word")return [...(item.parts||[item.meaning])];
-  return [];
-}
-
-function getQuestionData(item){
-  const mode=getMode(item);
-
-  if(item.type==="char"){
-    return {
-      label:"뜻과 음을 모두 입력하세요",
-      hint:"예: 나무목 (띄어쓰기 없이)",
-      answer:item.meaning+item.reading
-    };
-  }
-
-  if(mode==="reading"){
-    return {
-      label:"한자어의 음을 입력하세요",
-      hint:"한자어 전체의 음을 입력하세요",
-      answer:item.reading
-    };
-  }
-
-  if(mode==="full"){
-    const ans=getGlossItems(item).map(x=>x.meaning+x.reading).join("");
-    return {
-      label:"각 글자의 뜻과 음을 순서대로 입력하세요",
-      hint:"띄어쓰기 없이 입력하세요",
-      answer:ans
-    };
-  }
-
-  if(mode==="meaning"){
-    return {
-      label:"이 단어 또는 사자성어의 전체 뜻을 입력하세요",
-      hint:"핵심 의미를 문장으로 입력하세요",
-      answer:item.meaning
-    };
-  }
-
-  const parts=getParts(item);
-  return {
-    label:"한자별 뜻을 확인하고 올바른 풀이 순서를 입력하세요",
-    hint:"아래 풀이 조각의 번호를 순서대로 입력하세요. 예: 2-1",
-    answer:parts.map((_,i)=>i+1).join("-"),
-    parts
-  };
-}
-
 function renderQuestion(){
-  if(index>=current.length){
-    showResults();
+  if(index>=questions.length){
+    $("question").textContent="퀴즈 완료!";
+    $("hint").textContent="모든 문제를 풀었습니다.";
+    $("answer").classList.add("hidden");
+    $("check").classList.add("hidden");
+    $("next").classList.add("hidden");
+    $("progress").textContent=`완료: ${questions.length}문제`;
     return;
   }
-
-  const item=current[index];
-  const q=getQuestionData(item);
-  checked=records[index].status!=="unanswered";
-
-  $("quizType").textContent=labels[item.type]+(reviewOnly?" · 오답 복습":"");
-  $("position").textContent=`${index+1} / ${current.length}`;
-  $("bar").style.width=`${(index+1)/current.length*100}%`;
-  $("questionLabel").textContent=q.label;
-  $("question").textContent=item.hanja;
-  $("hint").textContent=q.hint;
-  $("glosses").innerHTML="";
-
-  if(item.type!=="char"){
-    const mode=$("mode").value;
-
-    if(mode==="order"){
-      getGlossItems(item).forEach(g=>{
-        const el=document.createElement("div");
-        el.className="gloss";
-        const b=document.createElement("b");
-        b.textContent=g.hanja;
-        const span=document.createElement("span");
-        span.textContent=`${g.meaning} · ${g.reading}`;
-        el.append(b,span);
-        $("glosses").appendChild(el);
-      });
-
-      const parts=q.parts||[];
-      const shuffled=shuffle(parts.map((p,i)=>({p,original:i+1})));
-
-      shuffled.forEach((x,i)=>{
-        const el=document.createElement("div");
-        el.className="gloss";
-        const b=document.createElement("b");
-        b.textContent=i+1;
-        const span=document.createElement("span");
-        span.textContent=x.p;
-        el.append(b,span);
-        el.dataset.original=x.original;
-        $("glosses").appendChild(el);
-      });
-
-      q.answer=shuffled.map(x=>x.original).join("-");
-      q.partsDisplay=shuffled;
-    }else if(mode==="meaning"){
-      getGlossItems(item).forEach(g=>{
-        const el=document.createElement("div");
-        el.className="gloss";
-        const b=document.createElement("b");
-        b.textContent=g.hanja;
-        const span=document.createElement("span");
-        span.textContent=g.meaning;
-        el.append(b,span);
-        $("glosses").appendChild(el);
-      });
-    }
-  }
-
-  $("answer").value=records[index].input||"";
-  $("feedback").className="feedback hidden";
-  $("feedback").textContent="";
-  $("check").classList.toggle("hidden",checked);
-  $("next").classList.toggle("hidden",!checked);
-  $("next").textContent=index===current.length-1?"결과 보기 →":"다음 →";
-  $("prev").disabled=index===0;
-
-  if(checked)showFeedback(item,q,records[index]);
-
-  current[index]._questionData=q;
+  answered=!!history[index].status;
+  const q=questions[index];
+  $("progress").textContent=`${kindNames[q.kind]} · ${index+1}/${questions.length}`;
+  $("question").textContent=q.hanja;
+  $("hint").textContent=$("mode").value==="meaning"?"전체 뜻을 입력하세요.":"한자어의 음을 입력하세요.";
+  $("answer").classList.remove("hidden");
+  $("answer").value=history[index].input;
+  $("answer").disabled=answered;
+  $("check").classList.toggle("hidden",answered);
+  $("next").classList.toggle("hidden",!answered);
+  $("feedback").textContent=answered?
+    (history[index].status==="correct"?"정답입니다!":"정답: "+($("mode").value==="meaning"?q.meaning:q.reading)):"";
+  $("answer").focus({preventScroll:true});
 }
-
-function isCorrect(typed,answer,mode){
-  if(mode==="order"){
-    const a=norm(typed).replace(/[.,]/g,"-").replace(/[^0-9-]/g,"");
-    return a===String(answer);
-  }
-  return norm(typed)===norm(answer);
-}
-
-function showFeedback(item,q,rec){
-  const fb=$("feedback");
-  fb.className="feedback "+(rec.status==="correct"?"correct":rec.status==="wrong"?"wrong":"neutral");
-  let answer=q.answer;
-  if(getMode(item)==="order"){
-    answer=(q.parts||[]).join(" → ");
-  }
-  fb.textContent=(rec.status==="correct"?"정답입니다!":rec.status==="wrong"?"다시 확인해 보세요.":"건너뛴 문제입니다.")+
-    "\n정답: "+answer+
-    (item.meaning?"\n전체 뜻: "+item.meaning:"");
-  fb.classList.remove("hidden");
-}
-
-function focusAnswer(){
-  requestAnimationFrame(()=>{
-    $("answer").focus({preventScroll:true});
-  });
-}
-
 function checkAnswer(){
-  if(checked){
-    goNext();
-    return;
-  }
-  const item=current[index],q=item._questionData||getQuestionData(item);
-  const typed=$("answer").value;
-  records[index]={
-    status:isCorrect(typed,q.answer,getMode(item))?"correct":"wrong",
-    input:typed
-  };
-  checked=true;
-  showFeedback(item,q,records[index]);
+  if(answered)return;
+  const q=questions[index];
+  const typed=$("answer").value.trim().replace(/\s+/g,"");
+  const expected=($("mode").value==="meaning"?q.meaning:q.reading).replace(/\s+/g,"");
+  const correct=typed===expected;
+  history[index]={status:correct?"correct":"wrong",input:$("answer").value};
+  answered=true;
+  $("feedback").textContent=correct?"정답입니다!":"정답: "+expected;
+  $("answer").disabled=true;
   $("check").classList.add("hidden");
   $("next").classList.remove("hidden");
-  $("next").textContent=index===current.length-1?"결과 보기 →":"다음 →";
-  focusAnswer();
 }
-
-function goNext(){
-  if(!checked){
-    checkAnswer();
-    return;
-  }
-  index++;
-  if(index>=current.length){
-    showResults();
-    return;
-  }
-  renderQuestion();
-  focusAnswer();
-}
-
+$("start").onclick=startQuiz;
 $("check").onclick=checkAnswer;
-$("next").onclick=goNext;
-
-$("answer").addEventListener("input",()=>{
-  records[index].input=$("answer").value;
-  if(checked){
-    checked=false;
-    records[index].status="unanswered";
-    $("feedback").className="feedback hidden";
-    $("check").classList.remove("hidden");
-    $("next").classList.add("hidden");
-  }
-});
-
+$("next").onclick=()=>{
+  index++;
+  renderQuestion();
+};
 $("answer").addEventListener("keydown",e=>{
   if(e.key==="Enter"){
     e.preventDefault();
-    e.stopPropagation();
-    if(!checked)checkAnswer();
-    else goNext();
+    if(!answered)checkAnswer();
+    else{index++;renderQuestion();}
   }
 });
-
-$("prev").onclick=()=>{
-  if(index>0){
-    records[index].input=$("answer").value;
-    index--;
-    renderQuestion();
-    focusAnswer();
-  }
+$("previous").onclick=()=>{
+  if(index>0){index--;renderQuestion();}
 };
-
-$("skip").onclick=()=>{
-  if(!checked){
-    records[index]={
-      status:"unanswered",
-      input:$("answer").value
-    };
-    checked=true;
-    showFeedback(
-      current[index],
-      current[index]._questionData||getQuestionData(current[index]),
-      records[index]
-    );
-    $("check").classList.add("hidden");
-    $("next").classList.remove("hidden");
-  }else{
-    goNext();
-  }
-};
-
-function showResults(){
+$("exit").onclick=()=>{
   $("quiz").classList.add("hidden");
-  $("results").classList.remove("hidden");
-
-  const correct=records.filter(x=>x.status==="correct").length;
-  $("total").textContent=current.length;
-  $("right").textContent=correct;
-  $("wrong").textContent=current.length-correct;
-  $("retry").disabled=!records.some(x=>x.status!=="correct");
-
-  const list=$("resultList");
-  list.innerHTML="";
-
-  current.forEach((item,i)=>{
-    const q=item._questionData||getQuestionData(item);
-    const rec=records[i];
-    const el=document.createElement("div");
-    el.className="result-item";
-
-    const status=rec.status==="correct"?"정답":rec.status==="wrong"?"오답":"미응답";
-    el.innerHTML=`<strong>${i+1}. ${escapeHtml(item.hanja)} — ${status}</strong><br>
-      내 답: ${escapeHtml(rec.input||"(입력 없음)")}<br>
-      정답: ${escapeHtml(String(q.answer))}<br>
-      전체 뜻: ${escapeHtml(item.meaning||"뜻 자료 없음")}`;
-    list.appendChild(el);
-  });
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
-}
-
-$("start").onclick=()=>startQuiz();
-
-$("retry").onclick=()=>{
-  const bad=current.filter((x,i)=>records[i].status!=="correct");
-  if(!bad.length)return;
-  $("kind").value=bad[0].type;
-  startQuiz(bad,true);
+  $("answer").classList.remove("hidden");
+  $("answer").disabled=false;
 };
-
-$("restart").onclick=()=>{
-  if(lastConfig){
-    $("kind").value=lastConfig.kind;
-    $("mode").value=lastConfig.mode;
-    $("order").value=lastConfig.order;
-    updateModeOptions();
-    startQuiz([...lastConfig.items]);
-  }
-};
-
-$("back").onclick=()=>{
-  $("results").classList.add("hidden");
-  $("setup").classList.remove("hidden");
-  $("rangesPanel").classList.remove("hidden");
-};
-
-$("counts").textContent=`${chars.length}자 · ${words.length}단어 · ${idioms.length}성어`;
-try {
-  renderRanges();
-  updateRangeSummary();
-  updateModeOptions();
-
-  if (!$("ranges").children.length) {
-    throw new Error("범위 목록이 생성되지 않았습니다.");
-  }
-} catch (error) {
-  console.error("한문 퀴즈 초기화 오류:", error);
-  $("rangeSummary").textContent =
-    "범위 목록을 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
-}
+updateSummary();
 </script>
 </body>
 </html>

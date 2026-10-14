@@ -793,8 +793,19 @@ $("back").onclick=()=>{
 };
 
 $("counts").textContent=`${chars.length}자 · ${words.length}단어 · ${idioms.length}성어`;
-renderRanges();
-updateModeOptions();
+try {
+  renderRanges();
+  updateRangeSummary();
+  updateModeOptions();
+
+  if (!$("ranges").children.length) {
+    throw new Error("범위 목록이 생성되지 않았습니다.");
+  }
+} catch (error) {
+  console.error("한문 퀴즈 초기화 오류:", error);
+  $("rangeSummary").textContent =
+    "범위 목록을 불러오지 못했습니다. 페이지를 새로고침해 주세요.";
+}
 </script>
 </body>
 </html>
